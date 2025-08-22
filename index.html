@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Atualizar Notas - Colaboradores CS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input {
+      padding: 5px;
+      margin-top: 3px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    table,
+    th,
+    td {
+      border: 1px solid #ccc;
+    }
+
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    #resultado {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Atualizar notas dos colaboradores CS</h2>
+
+  <!-- Formulário de parâmetros -->
+  <label>Formulário 1 ID:
+    <input type="text" id="form1" required>
+  </label>
+  <label>Formulário 2 ID:
+    <input type="text" id="form2" required>
+  </label>
+  <label>Mês:
+    <input type="text" id="mes" placeholder="Agosto" required>
+  </label>
+  <label>Ano:
+    <input type="number" id="ano" placeholder="2025" required>
+  </label>
+  <label>Planilha destino ID:
+    <input type="text" id="sheetId" required>
+  </label>
+  <label>GID da aba:
+    <input type="number" id="gid" value="0">
+  </label>
+
+  <button onclick="atualizarNotas()">Atualizar Notas</button>
+
+  <div id="resultado"></div>
+
+  <h3>Colaboradores CS (referência)</h3>
+  <table id="tabelaColaboradores">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>E-mail</th>
+        <th>Função</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyu7DPbrj0leRxVCA5_FtOKyVdveIQPtKTu1_d1ZbIScyQkI2Akw8TTMiWxgpot5D4U/exec"; // substitua pela URL do webapp publicado
+
+    // Buscar colaboradores ao carregar a página
+    window.onload = async function () {
+      try {
+        const response = await fetch(`${GAS_URL}?action=getColaboradores`);
+        const data = await response.json();
+        if (data.error) {
+          alert("Erro ao buscar colaboradores: " + data.error);
+          return;
+        }
+        preencherTabelaColaboradores(data); // exibe todos
+      } catch (err) {
+        console.error("Erro:", err);
+      }
+    };
+
+
+    function preencherTabelaColaboradores(colaboradores) {
+      const tbody = document.querySelector("#tabelaColaboradores tbody");
+      tbody.innerHTML = "";
+      colaboradores.forEach(c => {
+        let tr = document.createElement("tr");
+        tr.innerHTML = `<td>${c.nome}</td><td>${c.email}</td><td>${c.funcao}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function atualizarNotas() {
+      const form1 = document.getElementById("form1").value.trim();
+      const form2 = document.getElementById("form2").value.trim();
+      const mes = document.getElementById("mes").value.trim();
+      const ano = document.getElementById("ano").value.trim();
+      const sheetId = document.getElementById("sheetId").value.trim();
+      const gid = document.getElementById("gid").value.trim();
+
+      const url = `${GAS_URL}?formIds=${form1},${form2}&mes=${mes}&ano=${ano}&sheetId=${sheetId}&gid=${gid}`;
+      try {
+        const response = await fetch(url);
+        const result = await response.json();
+        document.getElementById("resultado").innerText =
+          result.error ? "Erro: " + result.error : "Notas atualizadas com sucesso na coluna " + result.coluna;
+      } catch (err) {
+        console.error("Erro:", err);
+        document.getElementById("resultado").innerText = "Erro na atualização.";
+      }
+    }
+  </script>
+
+</body>
+
+</html>
