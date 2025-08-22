@@ -3,148 +3,80 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Atualizar Notas - Colaboradores CS</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-
-    label {
-      display: block;
-      margin-top: 10px;
-    }
-
-    input {
-      padding: 5px;
-      margin-top: 3px;
-    }
-
-    button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      cursor: pointer;
-    }
-
-    table {
-      border-collapse: collapse;
-      margin-top: 20px;
-      width: 100%;
-    }
-
-    table,
-    th,
-    td {
-      border: 1px solid #ccc;
-    }
-
-    th,
-    td {
-      padding: 8px;
-      text-align: left;
-    }
-
-    th {
-      background-color: #f2f2f2;
-    }
-
-    #resultado {
-      margin-top: 20px;
-      font-weight: bold;
-    }
-  </style>
+  <title>Notas Formulários</title>
 </head>
 
 <body>
+  <h2>Atualizar notas</h2>
 
-  <h2>Atualizar notas dos colaboradores CS</h2>
+  <label>ID do Formulário 1:
+    <input type="text" id="form1" placeholder="ID do Formulário 1" required>
+  </label><br><br>
 
-  <!-- Formulário de parâmetros -->
-  <label>Formulário 1 ID:
-    <input type="text" id="form1" required>
-  </label>
-  <label>Formulário 2 ID:
-    <input type="text" id="form2" required>
-  </label>
+  <label>ID do Formulário 2:
+    <input type="text" id="form2" placeholder="ID do Formulário 2" required>
+  </label><br><br>
+
   <label>Mês:
     <input type="text" id="mes" placeholder="Agosto" required>
-  </label>
+  </label><br><br>
+
   <label>Ano:
-    <input type="number" id="ano" placeholder="2025" required>
-  </label>
-  <label>Planilha destino ID:
-    <input type="text" id="sheetId" required>
-  </label>
-  <label>GID da aba:
-    <input type="number" id="gid" value="0">
-  </label>
+    <input type="text" id="ano" placeholder="2025" required>
+  </label><br><br>
 
-  <button onclick="atualizarNotas()">Atualizar Notas</button>
+  <h3>Planilha CS</h3>
+  <label>ID da planilha CS:
+    <input type="text" id="sheetIdCS" placeholder="ID da planilha CS" required>
+  </label><br><br>
 
-  <div id="resultado"></div>
+  <label>GID da aba CS:
+    <input type="text" id="gidCS" placeholder="0" value="0" required>
+  </label><br><br>
 
-  <h3>Colaboradores CS (referência)</h3>
-  <table id="tabelaColaboradores">
-    <thead>
-      <tr>
-        <th>Nome</th>
-        <th>E-mail</th>
-        <th>Função</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <h3>Planilha Service</h3>
+  <label>ID da planilha Service:
+    <input type="text" id="sheetIdService" placeholder="ID da planilha Service" required>
+  </label><br><br>
+
+  <label>GID da aba Service:
+    <input type="text" id="gidService" placeholder="0" value="0" required>
+  </label><br><br>
+
+  <label>Data (para Service):
+    <input type="text" id="dataService" placeholder="20/08/2025" required>
+  </label><br><br>
+
+  <button onclick="atualizarNotas()">Atualizar</button>
+
+  <pre id="resultado"></pre>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbyu7DPbrj0leRxVCA5_FtOKyVdveIQPtKTu1_d1ZbIScyQkI2Akw8TTMiWxgpot5D4U/exec"; // substitua pela URL do webapp publicado
-
-    // Buscar colaboradores ao carregar a página
-    window.onload = async function () {
-      try {
-        const response = await fetch(`${GAS_URL}?action=getColaboradores`);
-        const data = await response.json();
-        if (data.error) {
-          alert("Erro ao buscar colaboradores: " + data.error);
-          return;
-        }
-        preencherTabelaColaboradores(data); // exibe todos
-      } catch (err) {
-        console.error("Erro:", err);
-      }
-    };
-
-
-    function preencherTabelaColaboradores(colaboradores) {
-      const tbody = document.querySelector("#tabelaColaboradores tbody");
-      tbody.innerHTML = "";
-      colaboradores.forEach(c => {
-        let tr = document.createElement("tr");
-        tr.innerHTML = `<td>${c.nome}</td><td>${c.email}</td><td>${c.funcao}</td>`;
-        tbody.appendChild(tr);
-      });
-    }
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyu7DPbrj0leRxVCA5_FtOKyVdveIQPtKTu1_d1ZbIScyQkI2Akw8TTMiWxgpot5D4U/exec"; // <<< substitua aqui depois de publicar
 
     async function atualizarNotas() {
       const form1 = document.getElementById("form1").value.trim();
       const form2 = document.getElementById("form2").value.trim();
       const mes = document.getElementById("mes").value.trim();
       const ano = document.getElementById("ano").value.trim();
-      const sheetId = document.getElementById("sheetId").value.trim();
-      const gid = document.getElementById("gid").value.trim();
+      const sheetIdCS = document.getElementById("sheetIdCS").value.trim();
+      const gidCS = document.getElementById("gidCS").value.trim();
+      const sheetIdService = document.getElementById("sheetIdService").value.trim();
+      const gidService = document.getElementById("gidService").value.trim();
+      const dataService = document.getElementById("dataService").value.trim();
 
-      const url = `${GAS_URL}?formIds=${form1},${form2}&mes=${mes}&ano=${ano}&sheetId=${sheetId}&gid=${gid}`;
+      const url = `${GAS_URL}?formIds=${form1},${form2}&mes=${mes}&ano=${ano}&sheetIdCS=${sheetIdCS}&gidCS=${gidCS}&sheetIdService=${sheetIdService}&gidService=${gidService}&dataService=${encodeURIComponent(dataService)}`;
+
       try {
         const response = await fetch(url);
-        const result = await response.json();
-        document.getElementById("resultado").innerText =
-          result.error ? "Erro: " + result.error : "Notas atualizadas com sucesso na coluna " + result.coluna;
+        const data = await response.json();
+        document.getElementById("resultado").textContent = JSON.stringify(data, null, 2);
       } catch (err) {
         console.error("Erro:", err);
-        document.getElementById("resultado").innerText = "Erro na atualização.";
+        alert("Erro ao atualizar notas");
       }
     }
   </script>
-
 </body>
 
 </html>
