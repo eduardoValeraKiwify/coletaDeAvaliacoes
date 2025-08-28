@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Gestão de Notas</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #4472c4;
+      color: #fff;
+      font-family: Calibri;
+      font-size: 11pt;
+    }
+
+    input[type="text"],
+    select {
+      width: 300px;
+      margin-bottom: 5px;
+    }
+
+    button {
+      margin-top: 5px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Colaboradores</h2>
+  <table id="colaboradoresTable">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>E-mail</th>
+        <th>Função</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>Calcular Médias de Formulários</h2>
+  Formulário 1 URL: <input type="text" id="formUrl1"><br>
+  Formulário 2 URL: <input type="text" id="formUrl2"><br>
+  <br>
+  <button onclick="calcularMedias()">Carregar e Calcular Médias</button>
+
+  <h3>Médias Calculadas</h3>
+  <table id="mediasTable">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>E-mail</th>
+        <th>Função</th>
+        <th>Média Final</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>Salvar Médias</h2>
+  <div>
+    <h3>Planilha CS</h3>
+    Sheet URL: <input type="text" id="sheetCS"><br>
+
+    <h3>Planilha Service</h3>
+    Sheet URL: <input type="text" id="sheetService"><br><br>
+
+    Mês:
+    <select id="mesSelect">
+      <option value="jan">Janeiro</option>
+      <option value="fev">Fevereiro</option>
+      <option value="mar">Março</option>
+      <option value="abr">Abril</option>
+      <option value="mai">Maio</option>
+      <option value="jun">Junho</option>
+      <option value="jul">Julho</option>
+      <option value="ago">Agosto</option>
+      <option value="set">Setembro</option>
+      <option value="out">Outubro</option>
+      <option value="nov">Novembro</option>
+      <option value="dez">Dezembro</option>
+    </select>
+    Ano:
+    <select id="anoSelect">
+      <option value="2025">2025</option>
+      <option value="2026">2026</option>
+      <option value="2027">2027</option>
+      <option value="2028">2028</option>
+    </select>
+  </div>
+
+  <button onclick="salvarMedias()">Salvar Médias nas Planilhas</button>
+
+  <script>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbw-lU9DYXu61bY3OrSRAZ2FKLbT6YIC2jYBud0hC6SSSbhEEce4drEIsm_56bXR798C/exec";
+    let colaboradores = [];
+
+    async function fetchJSON(url) {
+      const res = await fetch(url);
+      return await res.json();
+    }
+
+    async function carregarColaboradores() {
+      colaboradores = await fetchJSON(GAS_URL + "?action=getColaboradores");
+      renderColaboradores();
+    }
+
+    function renderColaboradores() {
+      const tbody = document.querySelector("#colaboradoresTable tbody");
+      tbody.innerHTML = "";
+      colaboradores.forEach(c => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${c.nome}</td><td>${c.email}</td><td>${c.funcao}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Extrair ID do formulário
+    function extrairFormId(url) {
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      return match ? match[1] : url.trim(); // se usuário já colou só o ID
+    }
+
+    // Extrair ID da planilha
+    function extrairSheetId(url) {
+      const match = url.match(/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+      return match ? match[1] : url.trim(); // se usuário já colou só o ID
+    }
+
+    async function calcularMedias() {
+      const id1 = extrairFormId(document.getElementById("formUrl1").value.trim());
+      const id2 = extrairFormId(document.getElementById("formUrl2").value.trim());
+      if (!id1 || !id2) { alert("Informe URLs válidas para ambos formulários!"); return; }
+
+      const respostas = await fetchJSON(GAS_URL + "?action=getFormResponses&formIds=" + encodeURIComponent(id1 + "," + id2));
+      const medias = [];
+
+      for (let c of colaboradores) {
+        const r = respostas[c.email] || {};
+        const nota1 = (r.form1 && typeof r.form1.notaFinal !== "undefined") ? Number(r.form1.notaFinal) : 1;
+        const nota2 = (r.form2 && typeof r.form2.notaFinal !== "undefined") ? Number(r.form2.notaFinal) : 1;
+        const mediaFinal = ((nota1 + nota2) / 2).toFixed(2);
+        medias.push({ nome: c.nome, email: c.email, funcao: c.funcao, mediaFinal });
+      }
+
+      renderMedias(medias);
+    }
+
+    function renderMedias(medias) {
+      const tbody = document.querySelector("#mediasTable tbody");
+      tbody.innerHTML = "";
+      medias.forEach(m => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${m.nome}</td><td>${m.email}</td><td>${m.funcao}</td><td>${m.mediaFinal}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function salvarMedias() {
+      const rows = document.querySelectorAll("#mediasTable tbody tr");
+      const medias = Array.from(rows).map(tr => {
+        const cells = tr.querySelectorAll("td");
+        return { nome: cells[0].textContent, email: cells[1].textContent, funcao: cells[2].textContent, mediaFinal: parseFloat(cells[3].textContent) || 0 };
+      });
+
+      const cs = medias.filter(m => m.funcao === "CS");
+      const service = medias.filter(m => m.funcao === "Service");
+
+      const mes = document.getElementById("mesSelect").value;
+      const ano = document.getElementById("anoSelect").value;
+      const colunaCS = mes + "./" + ano.slice(-2);
+
+      const mesesMap = { jan: "01", fev: "02", mar: "03", abr: "04", mai: "05", jun: "06", jul: "07", ago: "08", set: "09", out: "10", nov: "11", dez: "12" };
+      const mesNum = mesesMap[mes];
+      const dataService = `01/${mesNum}/${ano}`;
+
+      // 🔹 extrai apenas o ID da planilha
+      const sheetIdCS = extrairSheetId(document.getElementById("sheetCS").value);
+      const sheetIdService = extrairSheetId(document.getElementById("sheetService").value);
+
+      const payloadCS = { sheetId: sheetIdCS, gid: 0, coluna: colunaCS, dados: cs.map(c => ({ nome: c.nome, nota: c.mediaFinal })) };
+      const payloadService = { sheetId: sheetIdService, gid: 0, data: dataService, dados: service.map(c => ({ nome: c.nome, nota: c.mediaFinal })) };
+
+      await fetch(GAS_URL + "?action=saveNotasCS&payload=" + encodeURIComponent(JSON.stringify(payloadCS)));
+      await fetch(GAS_URL + "?action=saveNotasService&payload=" + encodeURIComponent(JSON.stringify(payloadService)));
+
+      alert("Médias salvas com sucesso!");
+    }
+
+    carregarColaboradores();
+  </script>
+
+</body>
+
+</html>
