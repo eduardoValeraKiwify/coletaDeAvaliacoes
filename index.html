@@ -3,80 +3,221 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Notas Formulários</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestão de Notas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .form-select {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3e%3cpath d='M7 7l3-3 3 3m0 6l-3 3-3-3' stroke='%239fa6b2' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      -webkit-print-color-adjust: exact;
+      color-adjust: exact;
+      background-repeat: no-repeat;
+      background-color: #ffffff;
+      border-color: #d2d6dc;
+      border-width: 1px;
+      border-radius: 0.375rem;
+      padding-top: 0.5rem;
+      padding-right: 2.5rem;
+      padding-bottom: 0.5rem;
+      padding-left: 0.75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      background-position: right 0.5rem center;
+      background-size: 1.5em 1.5em;
+    }
+  </style>
 </head>
 
-<body>
-  <h2>Atualizar notas</h2>
+<body class="bg-gray-50 text-gray-800 min-h-screen p-6">
 
-  <label>ID do Formulário 1:
-    <input type="text" id="form1" placeholder="ID do Formulário 1" required>
-  </label><br><br>
+  <!-- Colaboradores -->
+  <section class="mb-10">
+    <h2 class="text-lg font-medium leading-6 text-gray-900">Colaboradores</h2>
+    <div class="overflow-x-auto shadow-md rounded-lg">
+      <table id="colaboradoresTable" class="min-w-full border border-[#d2d6dc] rounded-lg">
+        <thead class="bg-[#057a55] text-white">
+          <tr>
+            <th class="px-6 py-3 text-left text-sm font-semibold">Nome</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold">E-mail</th>
+            <th class="px-6 py-3 text-center text-sm font-semibold">Função</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[#d2d6dc]"></tbody>
+      </table>
+    </div>
+  </section>
 
-  <label>ID do Formulário 2:
-    <input type="text" id="form2" placeholder="ID do Formulário 2" required>
-  </label><br><br>
+  <!-- Calcular Médias -->
+  <section class="mb-10">
+    <h2 class="text-lg font-medium leading-6 text-gray-900">Calcular Médias de Formulários</h2>
 
-  <label>Mês:
-    <input type="text" id="mes" placeholder="Agosto" required>
-  </label><br><br>
+    <div class="space-y-4 mb-6">
+      <div>
+        <label class="block text-sm font-medium leading-5 text-gray-700 mb-1">Formulário 1 URL:</label>
+        <input type="text" id="formUrl1" class="form-input block py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5 mask-user-input w-full">
+      </div>
+      <div>
+        <label class="block text-sm font-medium leading-5 text-gray-700 mb-1">Formulário 2 URL:</label>
+        <input type="text" id="formUrl2" class="form-input block py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5 mask-user-input w-full">
+      </div>
+    </div>
 
-  <label>Ano:
-    <input type="text" id="ano" placeholder="2025" required>
-  </label><br><br>
+    <!-- <button onclick="calcularMedias()" class="bg-[#057a55] hover:bg-[#046347] text-white font-semibold px-6 py-2 rounded-lg shadow">
+      Carregar e Calcular Médias
+    </button> -->
+    <button onclick="calcularMedias()" class="font-medium rounded-md border transition ease-in-out duration-150 focus:outline-none text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 border-transparent focus:border-indigo-700 focus:shadow-outline-indigo leading-5 text-sm px-4 py-2 gap-2 cursor-pointer shadow-sm">
+      Carregar e Calcular Médias
+    </button>
 
-  <h3>Planilha CS</h3>
-  <label>ID da planilha CS:
-    <input type="text" id="sheetIdCS" placeholder="ID da planilha CS" required>
-  </label><br><br>
+    <h3 class="text-lg font-medium leading-6 text-gray-900">Médias Calculadas</h3>
+    <div class="overflow-x-auto shadow-md rounded-lg">
+      <table id="mediasTable" class="min-w-full border border-[#d2d6dc] rounded-lg">
+        <thead class="bg-[#057a55] text-white">
+          <tr>
+            <th class="px-6 py-3 text-left text-sm font-semibold">Nome</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold">E-mail</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold">Função</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold">Média Final</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[#d2d6dc]"></tbody>
+      </table>
+    </div>
+  </section>
 
-  <label>GID da aba CS:
-    <input type="text" id="gidCS" placeholder="0" value="0" required>
-  </label><br><br>
+  <!-- Salvar Médias -->
+  <section>
+    <h2 class="text-lg font-medium leading-6 text-gray-900">Salvar Médias</h2>
 
-  <h3>Planilha Service</h3>
-  <label>ID da planilha Service:
-    <input type="text" id="sheetIdService" placeholder="ID da planilha Service" required>
-  </label><br><br>
+    <div class="space-y-6 mb-6">
+      <div class="flex items-center gap-4">
+        <div>
+          <label for="mesSelect" class="block text-sm font-medium leading-5 text-gray-700 mb-1">Mês:</label>
+          <select id="mesSelect" class="form-select shadow-sm block w-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 transition ease-in-out duration-150">
+            <option value="jan">Janeiro</option>
+            <option value="fev">Fevereiro</option>
+            <option value="mar">Março</option>
+            <option value="abr">Abril</option>
+            <option value="mai">Maio</option>
+            <option value="jun">Junho</option>
+            <option value="jul">Julho</option>
+            <option value="ago">Agosto</option>
+            <option value="set">Setembro</option>
+            <option value="out">Outubro</option>
+            <option value="nov">Novembro</option>
+            <option value="dez">Dezembro</option>
+          </select>
+        </div>
 
-  <label>GID da aba Service:
-    <input type="text" id="gidService" placeholder="0" value="0" required>
-  </label><br><br>
+        <div>
+          <label for="anoSelect" class="block text-sm font-medium leading-5 text-gray-700 mb-1">Ano:</label>
+          <select id="anoSelect" class="form-select shadow-sm block w-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 transition ease-in-out duration-150">
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+          </select>
+        </div>
+      </div>
+    </div>
 
-  <label>Data (para Service):
-    <input type="text" id="dataService" placeholder="20/08/2025" required>
-  </label><br><br>
-
-  <button onclick="atualizarNotas()">Atualizar</button>
-
-  <pre id="resultado"></pre>
+    <button onclick="salvarMedias()" class="font-medium rounded-md border transition ease-in-out duration-150 focus:outline-none text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 border-transparent focus:border-indigo-700 focus:shadow-outline-indigo leading-5 text-sm px-4 py-2 gap-2 cursor-pointer shadow-sm">
+      Salvar Médias nas Planilhas
+    </button>
+  </section>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbyu7DPbrj0leRxVCA5_FtOKyVdveIQPtKTu1_d1ZbIScyQkI2Akw8TTMiWxgpot5D4U/exec"; // <<< substitua aqui depois de publicar
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbw-lU9DYXu61bY3OrSRAZ2FKLbT6YIC2jYBud0hC6SSSbhEEce4drEIsm_56bXR798C/exec";
+    let colaboradores = [];
 
-    async function atualizarNotas() {
-      const form1 = document.getElementById("form1").value.trim();
-      const form2 = document.getElementById("form2").value.trim();
-      const mes = document.getElementById("mes").value.trim();
-      const ano = document.getElementById("ano").value.trim();
-      const sheetIdCS = document.getElementById("sheetIdCS").value.trim();
-      const gidCS = document.getElementById("gidCS").value.trim();
-      const sheetIdService = document.getElementById("sheetIdService").value.trim();
-      const gidService = document.getElementById("gidService").value.trim();
-      const dataService = document.getElementById("dataService").value.trim();
-
-      const url = `${GAS_URL}?formIds=${form1},${form2}&mes=${mes}&ano=${ano}&sheetIdCS=${sheetIdCS}&gidCS=${gidCS}&sheetIdService=${sheetIdService}&gidService=${gidService}&dataService=${encodeURIComponent(dataService)}`;
-
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        document.getElementById("resultado").textContent = JSON.stringify(data, null, 2);
-      } catch (err) {
-        console.error("Erro:", err);
-        alert("Erro ao atualizar notas");
-      }
+    async function fetchJSON(url) {
+      const res = await fetch(url);
+      return await res.json();
     }
+
+    async function carregarColaboradores() {
+      colaboradores = await fetchJSON(GAS_URL + "?action=getColaboradores");
+      renderColaboradores();
+    }
+
+    function renderColaboradores() {
+      const tbody = document.querySelector("#colaboradoresTable tbody");
+      tbody.innerHTML = "";
+      colaboradores.forEach(c => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td class="px-6 py-3">${c.nome}</td><td class="px-6 py-3">${c.email}</td><td class="px-6 py-3 text-center">${c.funcao}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Extrair ID do formulário
+    function extrairFormId(url) {
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      return match ? match[1] : url.trim(); // se usuário já colou só o ID
+    }
+
+    async function calcularMedias() {
+      const id1 = extrairFormId(document.getElementById("formUrl1").value.trim());
+      const id2 = extrairFormId(document.getElementById("formUrl2").value.trim());
+      if (!id1 || !id2) { alert("Informe URLs válidas para ambos formulários!"); return; }
+
+      const respostas = await fetchJSON(GAS_URL + "?action=getFormResponses&formIds=" + encodeURIComponent(id1 + "," + id2));
+      const medias = [];
+
+      for (let c of colaboradores) {
+        const r = respostas[c.email] || {};
+        const nota1 = (r.form1 && typeof r.form1.notaFinal !== "undefined") ? Number(r.form1.notaFinal) : 1;
+        const nota2 = (r.form2 && typeof r.form2.notaFinal !== "undefined") ? Number(r.form2.notaFinal) : 1;
+        const mediaFinal = ((nota1 + nota2) / 2).toFixed(2);
+        medias.push({ nome: c.nome, email: c.email, funcao: c.funcao, mediaFinal });
+      }
+
+      renderMedias(medias);
+    }
+
+    function renderMedias(medias) {
+      const tbody = document.querySelector("#mediasTable tbody");
+      tbody.innerHTML = "";
+      medias.forEach(m => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td class="px-6 py-3">${m.nome}</td><td class="px-6 py-3">${m.email}</td><td class="px-6 py-3">${m.funcao}</td><td class="px-6 py-3">${m.mediaFinal}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function salvarMedias() {
+      const rows = document.querySelectorAll("#mediasTable tbody tr");
+      const medias = Array.from(rows).map(tr => {
+        const cells = tr.querySelectorAll("td");
+        return { nome: cells[0].textContent, email: cells[1].textContent, funcao: cells[2].textContent, mediaFinal: parseFloat(cells[3].textContent) || 0 };
+      });
+
+      const cs = medias.filter(m => m.funcao === "CS");
+      const service = medias.filter(m => m.funcao === "Service");
+
+      const mes = document.getElementById("mesSelect").value;
+      const ano = document.getElementById("anoSelect").value;
+      const colunaCS = mes + "./" + ano.slice(-2);
+
+      const mesesMap = { jan: "01", fev: "02", mar: "03", abr: "04", mai: "05", jun: "06", jul: "07", ago: "08", set: "09", out: "10", nov: "11", dez: "12" };
+      const mesNum = mesesMap[mes];
+      const dataService = `01/${mesNum}/${ano}`;
+
+      const payloadCS = { coluna: colunaCS, dados: cs.map(c => ({ nome: c.nome, nota: c.mediaFinal })) };
+      const payloadService = { data: dataService, dados: service.map(c => ({ nome: c.nome, nota: c.mediaFinal })) };
+
+      await fetch(GAS_URL + "?action=saveNotasCS&payload=" + encodeURIComponent(JSON.stringify(payloadCS)));
+      await fetch(GAS_URL + "?action=saveNotasService&payload=" + encodeURIComponent(JSON.stringify(payloadService)));
+
+      alert("Médias salvas com sucesso!");
+    }
+
+    carregarColaboradores();
   </script>
+
 </body>
 
 </html>
