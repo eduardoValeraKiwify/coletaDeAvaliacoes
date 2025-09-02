@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestão de Notas</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <style>
     .form-select {
       background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3e%3cpath d='M7 7l3-3 3 3m0 6l-3 3-3-3' stroke='%239fa6b2' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
@@ -35,7 +35,7 @@
 
   <!-- Colaboradores -->
   <section class="mb-10">
-    <h2 class="text-lg font-medium leading-6 text-gray-900">Colaboradores</h2>
+    <h2 class="text-lg font-medium leading-6 text-gray-900 mb-5">Colaboradores</h2>
     <div class="overflow-x-auto shadow-md rounded-lg">
       <table id="colaboradoresTable" class="min-w-full border border-[#d2d6dc] rounded-lg">
         <thead class="bg-[#057a55] text-white">
@@ -52,7 +52,7 @@
 
   <!-- Calcular Médias -->
   <section class="mb-10">
-    <h2 class="text-lg font-medium leading-6 text-gray-900">Calcular Médias de Formulários</h2>
+    <h2 class="text-lg font-medium leading-6 text-gray-900 mb-5">Calcular Médias de Formulários</h2>
 
     <div class="space-y-4 mb-6">
       <div>
@@ -65,14 +65,14 @@
       </div>
     </div>
 
-    <!-- <button onclick="calcularMedias()" class="bg-[#057a55] hover:bg-[#046347] text-white font-semibold px-6 py-2 rounded-lg shadow">
-      Carregar e Calcular Médias
-    </button> -->
-    <button onclick="calcularMedias()" class="font-medium rounded-md border transition ease-in-out duration-150 focus:outline-none text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 border-transparent focus:border-indigo-700 focus:shadow-outline-indigo leading-5 text-sm px-4 py-2 gap-2 cursor-pointer shadow-sm">
+    <button id="botaoCalcularMedia" class="inline-flex justify-center items-center font-medium rounded-md border transition ease-in-out duration-150 focus:outline-none text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 border-transparent focus:border-indigo-700 focus:shadow-outline-indigo leading-5 text-sm px-4 py-2 mb-5 gap-2 cursor-pointer shadow-sm">
       Carregar e Calcular Médias
     </button>
 
-    <h3 class="text-lg font-medium leading-6 text-gray-900">Médias Calculadas</h3>
+    <div class="container-status">
+    </div>
+
+    <h3 class="text-lg font-medium leading-6 text-gray-900 mb-5">Médias Calculadas</h3>
     <div class="overflow-x-auto shadow-md rounded-lg">
       <table id="mediasTable" class="min-w-full border border-[#d2d6dc] rounded-lg">
         <thead class="bg-[#057a55] text-white">
@@ -90,7 +90,7 @@
 
   <!-- Salvar Médias -->
   <section>
-    <h2 class="text-lg font-medium leading-6 text-gray-900">Salvar Médias</h2>
+    <h2 class="text-lg font-medium leading-6 text-gray-900 mb-5">Salvar Médias</h2>
 
     <div class="space-y-6 mb-6">
       <div class="flex items-center gap-4">
@@ -124,14 +124,32 @@
       </div>
     </div>
 
-    <button onclick="salvarMedias()" class="font-medium rounded-md border transition ease-in-out duration-150 focus:outline-none text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 border-transparent focus:border-indigo-700 focus:shadow-outline-indigo leading-5 text-sm px-4 py-2 gap-2 cursor-pointer shadow-sm">
+    <button onclick="salvarMedias(event)" class="inline-flex justify-center items-center font-medium rounded-md border transition ease-in-out duration-150 focus:outline-none text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 border-transparent focus:border-indigo-700 focus:shadow-outline-indigo leading-5 text-sm px-4 py-2 gap-2 cursor-pointer shadow-sm">
       Salvar Médias nas Planilhas
     </button>
+
+    <div class="container-status">
+    </div>
   </section>
 
   <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbw-lU9DYXu61bY3OrSRAZ2FKLbT6YIC2jYBud0hC6SSSbhEEce4drEIsm_56bXR798C/exec";
     let colaboradores = [];
+    let colaboradoresTeste = [
+      { nome: 'Ana Laura da Silva Barragana Vera', email: 'ana.silva@kiwify.com.br', funcao: 'CS' },
+      { nome: 'Isabelle Nascimento de Faria da Silva', email: 'isabelle.nascimento@kiwify.com.br', funcao: 'CS' },
+      { nome: 'Henrique Petri Silva', email: 'henrique.petri@kiwify.com.br', funcao: 'CS' },
+      { nome: 'Lucas Xavier Ferreira', email: 'lucas.xavier@kiwify.com.br', funcao: 'CS' },
+      { nome: 'Magno da silva Alves', email: 'magno.alves@kiwify.com.br', funcao: 'CS' },
+      { nome: 'Maria Eduarda Sinfães Fonseca', email: 'maria.sinfaes@kiwify.com.br', funcao: 'CS' },
+      { nome: 'Pedro Henrique Machado Braz', email: 'pedro.braz@kiwify.com.br', funcao: 'CS' },
+      { nome: 'Vitória Helena Tosta Silva', email: 'vitoria.silva@kiwify.com.br', funcao: 'CS' },
+      { nome: 'Bruna de Abreu Salmerón', email: 'bruna.salmeron@kiwify.com.br', funcao: 'Service' },
+      { nome: 'Gustavo da Silva Fontes', email: 'gustavo.fontes@kiwify.com.br', funcao: 'Service' },
+      { nome: 'Eduardo Valera', email: 'eduardo.valera@kiwify.com.br', funcao: 'CS' },
+      { nome: 'John Doe', email: 'john.doe@kiwify.com.br', funcao: 'CS' },
+    ]
+
 
     async function fetchJSON(url) {
       const res = await fetch(url);
@@ -159,36 +177,8 @@
       return match ? match[1] : url.trim(); // se usuário já colou só o ID
     }
 
-    async function calcularMedias() {
-      const id1 = extrairFormId(document.getElementById("formUrl1").value.trim());
-      const id2 = extrairFormId(document.getElementById("formUrl2").value.trim());
-      if (!id1 || !id2) { alert("Informe URLs válidas para ambos formulários!"); return; }
-
-      const respostas = await fetchJSON(GAS_URL + "?action=getFormResponses&formIds=" + encodeURIComponent(id1 + "," + id2));
-      const medias = [];
-
-      for (let c of colaboradores) {
-        const r = respostas[c.email] || {};
-        const nota1 = (r.form1 && typeof r.form1.notaFinal !== "undefined") ? Number(r.form1.notaFinal) : 1;
-        const nota2 = (r.form2 && typeof r.form2.notaFinal !== "undefined") ? Number(r.form2.notaFinal) : 1;
-        const mediaFinal = ((nota1 + nota2) / 2).toFixed(2);
-        medias.push({ nome: c.nome, email: c.email, funcao: c.funcao, mediaFinal });
-      }
-
-      renderMedias(medias);
-    }
-
-    function renderMedias(medias) {
-      const tbody = document.querySelector("#mediasTable tbody");
-      tbody.innerHTML = "";
-      medias.forEach(m => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td class="px-6 py-3">${m.nome}</td><td class="px-6 py-3">${m.email}</td><td class="px-6 py-3">${m.funcao}</td><td class="px-6 py-3">${m.mediaFinal}</td>`;
-        tbody.appendChild(tr);
-      });
-    }
-
-    async function salvarMedias() {
+    async function salvarMedias(event) {
+      toggleLoading(event.target, true);
       const rows = document.querySelectorAll("#mediasTable tbody tr");
       const medias = Array.from(rows).map(tr => {
         const cells = tr.querySelectorAll("td");
@@ -212,12 +202,13 @@
       await fetch(GAS_URL + "?action=saveNotasCS&payload=" + encodeURIComponent(JSON.stringify(payloadCS)));
       await fetch(GAS_URL + "?action=saveNotasService&payload=" + encodeURIComponent(JSON.stringify(payloadService)));
 
+      toggleLoading(event.target, false);
       alert("Médias salvas com sucesso!");
     }
 
-    carregarColaboradores();
+    // carregarColaboradores();
   </script>
-
+  <script src="js/script.js"></script>
 </body>
 
 </html>
