@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestão de Notas</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .form-select {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3e%3cpath d='M7 7l3-3 3 3m0 6l-3 3-3-3' stroke='%239fa6b2' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      -webkit-print-color-adjust: exact;
+      color-adjust: exact;
+      background-repeat: no-repeat;
+      background-color: #ffffff;
+      border-color: #d2d6dc;
+      border-width: 1px;
+      border-radius: 0.375rem;
+      padding-top: 0.5rem;
+      padding-right: 2.5rem;
+      padding-bottom: 0.5rem;
+      padding-left: 0.75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      background-position: right 0.5rem center;
+      background-size: 1.5em 1.5em;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 min-h-screen p-6">
+
+  <!-- Colaboradores -->
+  <section class="mb-10">
+    <h2 id="colaboradoresTitle" class="inline-flex justify-center items-center gap-2 text-lg font-medium leading-6 text-gray-900 mb-5">Colaboradores</h2>
+    <div class="overflow-x-auto shadow-md rounded-lg">
+      <table id="colaboradoresTable" class="min-w-full border border-[#d2d6dc] rounded-lg">
+        <thead class="bg-[#057a55] text-white">
+          <tr>
+            <th class="px-6 py-3 text-left text-sm font-semibold">Nome</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold">E-mail</th>
+            <th class="px-6 py-3 text-center text-sm font-semibold">Função</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[#d2d6dc]"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Calcular Médias -->
+  <section class="mb-10">
+    <h2 class="text-lg font-medium leading-6 text-gray-900 mb-5">Calcular Médias de Formulários</h2>
+
+    <div class="space-y-4 mb-6">
+      <div>
+        <label class="block text-sm font-medium leading-5 text-gray-700 mb-1">Formulário 1 URL:</label>
+        <input type="text" id="formUrl1" class="form-input block py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5 mask-user-input w-full">
+      </div>
+      <div>
+        <label class="block text-sm font-medium leading-5 text-gray-700 mb-1">Formulário 2 URL:</label>
+        <input type="text" id="formUrl2" class="form-input block py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5 mask-user-input w-full">
+      </div>
+    </div>
+
+    <button id="botaoCalcularMedias" class="inline-flex justify-center items-center font-medium rounded-md border transition ease-in-out duration-150 focus:outline-none text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 border-transparent focus:border-indigo-700 focus:shadow-outline-indigo leading-5 text-sm px-4 py-2 mb-5 gap-2 cursor-pointer shadow-sm">
+      Carregar e Calcular Médias
+    </button>
+
+    <div class="container-status">
+    </div>
+
+    <h3 class="text-lg font-medium leading-6 text-gray-900 mb-5">Médias Calculadas</h3>
+    <div class="overflow-x-auto shadow-md rounded-lg">
+      <table id="mediasTable" class="min-w-full border border-[#d2d6dc] rounded-lg">
+        <thead class="bg-[#057a55] text-white">
+          <tr>
+            <th class="px-6 py-3 text-left text-sm font-semibold">Nome</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold">E-mail</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold">Função</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold">Média Final</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[#d2d6dc]"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Salvar Médias -->
+  <section>
+    <h2 class="text-lg font-medium leading-6 text-gray-900 mb-5">Salvar Médias</h2>
+
+    <div class="space-y-6 mb-6">
+      <div class="flex items-center gap-4">
+        <div>
+          <label for="mesSelect" class="block text-sm font-medium leading-5 text-gray-700 mb-1">Mês:</label>
+          <select id="mesSelect" class="form-select shadow-sm block w-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 transition ease-in-out duration-150">
+            <option value="jan">Janeiro</option>
+            <option value="fev">Fevereiro</option>
+            <option value="mar">Março</option>
+            <option value="abr">Abril</option>
+            <option value="mai">Maio</option>
+            <option value="jun">Junho</option>
+            <option value="jul">Julho</option>
+            <option value="ago">Agosto</option>
+            <option value="set">Setembro</option>
+            <option value="out">Outubro</option>
+            <option value="nov">Novembro</option>
+            <option value="dez">Dezembro</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="anoSelect" class="block text-sm font-medium leading-5 text-gray-700 mb-1">Ano:</label>
+          <select id="anoSelect" class="form-select shadow-sm block w-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 transition ease-in-out duration-150">
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <button id="botaoSalvarMedias" class="inline-flex justify-center items-center font-medium rounded-md border transition ease-in-out duration-150 focus:outline-none text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 border-transparent focus:border-indigo-700 focus:shadow-outline-indigo leading-5 text-sm px-4 py-2 mb-5 gap-2 cursor-pointer shadow-sm">
+      Salvar Médias nas Planilhas
+    </button>
+
+    <div class="container-status">
+    </div>
+  </section>
+
+  <script>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbw-lU9DYXu61bY3OrSRAZ2FKLbT6YIC2jYBud0hC6SSSbhEEce4drEIsm_56bXR798C/exec";
+    let colaboradores = [];
+    let colaboradoresTeste = [
+      { nome: 'Ana Laura da Silva Barragana Vera', email: 'ana.silva@kiwify.com.br', funcao: 'CS' },
+      { nome: 'Isabelle Nascimento de Faria da Silva', email: 'isabelle.nascimento@kiwify.com.br', funcao: 'CS' },
+      { nome: 'Henrique Petri Silva', email: 'henrique.petri@kiwify.com.br', funcao: 'CS' },
+      { nome: 'Lucas Xavier Ferreira', email: 'lucas.xavier@kiwify.com.br', funcao: 'CS' },
+      { nome: 'Magno da silva Alves', email: 'magno.alves@kiwify.com.br', funcao: 'CS' },
+      { nome: 'Maria Eduarda Sinfães Fonseca', email: 'maria.sinfaes@kiwify.com.br', funcao: 'CS' },
+      { nome: 'Pedro Henrique Machado Braz', email: 'pedro.braz@kiwify.com.br', funcao: 'CS' },
+      { nome: 'Vitória Helena Tosta Silva', email: 'vitoria.silva@kiwify.com.br', funcao: 'CS' },
+      { nome: 'Bruna de Abreu Salmerón', email: 'bruna.salmeron@kiwify.com.br', funcao: 'Service' },
+      { nome: 'Gustavo da Silva Fontes', email: 'gustavo.fontes@kiwify.com.br', funcao: 'Service' },
+      { nome: 'Eduardo Valera', email: 'eduardo.valera@kiwify.com.br', funcao: 'CS' },
+      { nome: 'John Doe', email: 'john.doe@kiwify.com.br', funcao: 'CS' },
+    ]
+
+
+    async function fetchJSON(url) {
+      const res = await fetch(url);
+      return await res.json();
+    }
+
+    async function carregarColaboradores() {
+      toggleLoading(document.getElementById('colaboradoresTitle'), true)
+      colaboradores = await fetchJSON(GAS_URL + "?action=getColaboradores");
+      toggleLoading(document.getElementById('colaboradoresTitle'))
+      renderColaboradores();
+    }
+
+    function renderColaboradores() {
+      const tbody = document.querySelector("#colaboradoresTable tbody");
+      tbody.innerHTML = "";
+      colaboradores.forEach(c => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td class="px-6 py-3">${c.nome}</td><td class="px-6 py-3">${c.email}</td><td class="px-6 py-3 text-center">${c.funcao}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Extrair ID do formulário
+    function extrairFormId(url) {
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      return match ? match[1] : url.trim(); // se usuário já colou só o ID
+    }
+
+    function statusMensagem(
+      elementoReferencia,
+      mensagem = "Mensagem padrão",
+      tipo = "alerta",
+      efeitoScroll = true
+    ) {
+      const statusContainer = elementoReferencia.nextElementSibling;
+      if (statusContainer.classList.contains("container-status")) {
+        if (tipo === "sucesso") {
+          statusContainer.innerHTML = `
+        <!-- Sucesso -->
+        <div class="flex items-center gap-2 p-4 mb-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50" role="alert">
+          <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L9 11.586 6.707 9.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l7-7a1 1 0 000-1.414z" clip-rule="evenodd" />
+          </svg>
+          <span>${mensagem}</span>
+        </div>
+      `;
+        } else if (tipo === "erro") {
+          statusContainer.innerHTML = `
+        <!-- Erro -->
+        <div class="flex items-center gap-2 p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50" role="alert">
+          <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-11h2v4h-2V7zm0 6h2v2h-2v-2z" clip-rule="evenodd" />
+          </svg>
+          <span>${mensagem}</span>
+        </div>
+      `;
+        } else {
+          statusContainer.innerHTML = `
+        <!-- Alerta -->
+        <div class="flex items-center gap-2 p-4 mb-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50" role="alert">
+          <svg class="w-5 h-5 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M8.257 3.099c.366-.756 1.42-.756 1.786 0l7.451 15.377A1 1 0 0116.451 20H3.549a1 1 0 01-.894-1.524L8.257 3.1zM11 15a1 1 0 11-2 0 1 1 0 012 0zm-1-2a.75.75 0 01-.75-.75V8a.75.75 0 011.5 0v4.25A.75.75 0 0110 13z" clip-rule="evenodd" />
+          </svg>
+          <span>${mensagem}</span>
+        </div>
+      `;
+        }
+
+        efeitoScroll && statusContainer.scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(() => {
+          statusContainer.innerHTML = "";
+        }, 5000);
+      }
+    }
+
+    function toggleLoading(button, isLoading = false) {
+      if (isLoading) {
+        button.innerHTML = `<img src="../img/loading_icon.gif" height="20" width="20"> ${button.innerHTML}`;
+        button.disabled = true;
+      } else {
+        button.disabled = false;
+        button.innerHTML = button.innerText;
+      }
+    }
+
+    function renderMedias(medias) {
+      const tbody = document.querySelector("#mediasTable tbody");
+      tbody.innerHTML = "";
+      medias.forEach((m) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td class="px-6 py-3">${m.nome}</td><td class="px-6 py-3">${m.email}</td><td class="px-6 py-3">${m.funcao}</td><td class="px-6 py-3">${m.mediaFinal}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function calcularMedias() {
+      const id1 = extrairFormId(document.getElementById("formUrl1").value.trim());
+      const id2 = extrairFormId(document.getElementById("formUrl2").value.trim());
+      if (!id1 || !id2) {
+        statusMensagem(
+          this,
+          "Informe URLs válidas para ambos formulários!",
+          "alerta"
+        );
+        return;
+      }
+
+      toggleLoading(this, true);
+
+      const respostas = await fetchJSON(
+        GAS_URL +
+        "?action=getFormResponses&formIds=" +
+        encodeURIComponent(id1 + "," + id2)
+      );
+      const medias = [];
+
+      for (let c of colaboradores) {
+        const r = respostas[c.email] || {};
+        const nota1 =
+          r.form1 && typeof r.form1.notaFinal !== "undefined"
+            ? Number(r.form1.notaFinal)
+            : 1;
+        const nota2 =
+          r.form2 && typeof r.form2.notaFinal !== "undefined"
+            ? Number(r.form2.notaFinal)
+            : 1;
+        const mediaFinal = ((nota1 + nota2) / 2).toFixed(2);
+        medias.push({ nome: c.nome, email: c.email, funcao: c.funcao, mediaFinal });
+      }
+
+      renderMedias(medias);
+      toggleLoading(this, false);
+      statusMensagem(
+        this,
+        "Médias calculadas com sucesso!",
+        "sucesso",
+        false
+      );
+    }
+
+    async function salvarMedias() {
+      toggleLoading(this, true);
+      const rows = document.querySelectorAll("#mediasTable tbody tr");
+      const medias = Array.from(rows).map(tr => {
+        const cells = tr.querySelectorAll("td");
+        return { nome: cells[0].textContent, email: cells[1].textContent, funcao: cells[2].textContent, mediaFinal: parseFloat(cells[3].textContent) || 0 };
+      });
+
+      const cs = medias.filter(m => m.funcao === "CS");
+      const service = medias.filter(m => m.funcao === "Service");
+
+      const mes = document.getElementById("mesSelect").value;
+      const ano = document.getElementById("anoSelect").value;
+      const colunaCS = mes + "./" + ano.slice(-2);
+
+      const mesesMap = { jan: "01", fev: "02", mar: "03", abr: "04", mai: "05", jun: "06", jul: "07", ago: "08", set: "09", out: "10", nov: "11", dez: "12" };
+      const mesNum = mesesMap[mes];
+      const dataService = `01/${mesNum}/${ano}`;
+
+      const payloadCS = { coluna: colunaCS, dados: cs.map(c => ({ nome: c.nome, nota: c.mediaFinal })) };
+      const payloadService = { data: dataService, dados: service.map(c => ({ nome: c.nome, nota: c.mediaFinal })) };
+
+      await fetch(GAS_URL + "?action=saveNotasCS&payload=" + encodeURIComponent(JSON.stringify(payloadCS)));
+      await fetch(GAS_URL + "?action=saveNotasService&payload=" + encodeURIComponent(JSON.stringify(payloadService)));
+
+      toggleLoading(this, false);
+      statusMensagem(
+        this,
+        "Médias salvas com sucesso!",
+        "sucesso"
+      );
+    }
+
+    document
+      .getElementById("botaoCalcularMedias")
+      .addEventListener("click", calcularMedias);
+
+    document.getElementById('botaoSalvarMedias').addEventListener('click', salvarMedias)
+
+    carregarColaboradores();
+  </script>
+</body>
+
+</html>
