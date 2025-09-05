@@ -14,7 +14,7 @@ jobs:
           curl -s -o /dev/null -w "%{http_code}" \
             -H "apikey: $SUPABASE_ANON_KEY" \
             -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
-            "https://$SUPABASE_PROJECT.supabase.co/rest/v1/SUA_TABELA?select=id&limit=1"
+            "https://$SUPABASE_PROJECT.supabase.co/rest/v1/colaboradores?select=id&limit=1"
     env:
       SUPABASE_PROJECT: ${{ secrets.SUPABASE_PROJECT }}
       SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
