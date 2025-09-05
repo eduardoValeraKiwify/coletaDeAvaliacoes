@@ -38,6 +38,20 @@
     <section class="mb-10">
       <h2 id="colaboradoresTitle" class="inline-flex justify-center items-center gap-2 text-lg font-medium leading-6 text-gray-900 mb-5">Colaboradores</h2>
       <div class="overflow-x-auto shadow-md rounded-lg">
+        <div class="mb-4 flex gap-2 items-end">
+          <div>
+            <input id="novoNome" type="text" placeholder="Nome" class="form-input block py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5 mask-user-input w-full" />
+          </div>
+          <div>
+            <input id="novoEmail" type="email" placeholder="Email" class="form-input block py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5 mask-user-input w-full" />
+          </div>
+          <div>
+            <select id="novoFuncao" class="form-select shadow-sm block w-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 transition ease-in-out duration-150"></select>
+          </div>
+          <button id="btnAdicionar" class="inline-flex justify-center items-center font-medium rounded-md border transition ease-in-out duration-150 focus:outline-none text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 border-transparent focus:border-indigo-700 focus:shadow-outline-indigo leading-5 text-sm px-4 py-2 gap-2 cursor-pointer shadow-sm">
+            Adicionar
+          </button>
+        </div>
         <table id="colaboradoresTable" class="min-w-full border border-[#d2d6dc] rounded-lg">
           <thead class="bg-[#057a55] text-white">
             <tr>

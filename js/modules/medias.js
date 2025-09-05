@@ -45,7 +45,12 @@ export async function calcularMedias() {
         ? Number(r.form2.notaFinal)
         : 1;
     const mediaFinal = ((nota1 + nota2) / 2).toFixed(2);
-    medias.push({ nome: c.nome, email: c.email, funcao: c.funcao, mediaFinal });
+    medias.push({
+      nome: c.nome,
+      email: c.email,
+      funcao: c.funcoes.nome,
+      mediaFinal,
+    });
   }
 
   renderMedias(medias);
