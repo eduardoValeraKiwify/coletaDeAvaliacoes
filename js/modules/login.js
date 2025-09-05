@@ -1,6 +1,7 @@
 import { fetchPage } from "./fetch.js";
 import sessionCheck from "./session.js";
 import signIn from "./signIn.js";
+import { statusMensagem } from "./utils.js";
 
 export default async function initLogin() {
   const session = await sessionCheck();
@@ -18,7 +19,11 @@ export default async function initLogin() {
           const { success, data, error } = await signIn(email, password);
 
           if (!success) {
-            console.log("Usuário ou senha inválidos. Tente novamente.");
+            statusMensagem(
+              this,
+              "Usuário ou senha inválidos. Tente novamente.",
+              "erro"
+            );
             return;
           }
           fetchPage("coletor.html");
