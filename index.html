@@ -31,107 +31,41 @@
   </style>
 </head>
 
-<body class="bg-gray-50 text-gray-800 min-h-screen p-6">
+<body class="bg-gray-50 min-h-screen flex items-center justify-center px-4">
 
-  <!-- Colaboradores -->
-  <section class="mb-10">
-    <h2 id="colaboradoresTitle" class="inline-flex justify-center items-center gap-2 text-lg font-medium leading-6 text-gray-900 mb-5">Colaboradores</h2>
-    <div class="overflow-x-auto shadow-md rounded-lg">
-      <table id="colaboradoresTable" class="min-w-full border border-[#d2d6dc] rounded-lg">
-        <thead class="bg-[#057a55] text-white">
-          <tr>
-            <th class="px-6 py-3 text-left text-sm font-semibold">Nome</th>
-            <th class="px-6 py-3 text-left text-sm font-semibold">E-mail</th>
-            <th class="px-6 py-3 text-center text-sm font-semibold">Função</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-[#d2d6dc]"></tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- Calcular Médias -->
-  <section class="mb-10">
-    <h2 class="text-lg font-medium leading-6 text-gray-900 mb-5">Calcular Médias de Formulários</h2>
-
-    <div class="space-y-4 mb-6">
-      <div>
-        <label class="block text-sm font-medium leading-5 text-gray-700 mb-1">Formulário 1 URL:</label>
-        <input type="text" id="formUrl1" class="form-input block py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5 mask-user-input w-full">
+  <div class="main loginPage w-full h-full flex items-center justify-center">
+    <div class="w-full max-w-md bg-white rounded-lg shadow-md p-8 space-y-6">
+      <!-- Logo -->
+      <div class="flex justify-center">
+        <img src="./img/kiwify-logo.svg" alt="Logo" class="mx-auto h-12 w-auto">
       </div>
-      <div>
-        <label class="block text-sm font-medium leading-5 text-gray-700 mb-1">Formulário 2 URL:</label>
-        <input type="text" id="formUrl2" class="form-input block py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5 mask-user-input w-full">
-      </div>
-    </div>
 
-    <button id="botaoCalcularMedias" class="inline-flex justify-center items-center font-medium rounded-md border transition ease-in-out duration-150 focus:outline-none text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 border-transparent focus:border-indigo-700 focus:shadow-outline-indigo leading-5 text-sm px-4 py-2 mb-5 gap-2 cursor-pointer shadow-sm">
-      Carregar e Calcular Médias
-    </button>
+      <!-- Título -->
+      <h2 class="text-center text-2xl font-bold text-gray-900">Coleta de avaliações</h2>
 
-    <div class="container-status">
-    </div>
-
-    <h3 class="text-lg font-medium leading-6 text-gray-900 mb-5">Médias Calculadas</h3>
-    <div class="overflow-x-auto shadow-md rounded-lg">
-      <table id="mediasTable" class="min-w-full border border-[#d2d6dc] rounded-lg">
-        <thead class="bg-[#057a55] text-white">
-          <tr>
-            <th class="px-6 py-3 text-left text-sm font-semibold">Nome</th>
-            <th class="px-6 py-3 text-left text-sm font-semibold">E-mail</th>
-            <th class="px-6 py-3 text-left text-sm font-semibold">Função</th>
-            <th class="px-6 py-3 text-left text-sm font-semibold">Média Final</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-[#d2d6dc]"></tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- Salvar Médias -->
-  <section>
-    <h2 class="text-lg font-medium leading-6 text-gray-900 mb-5">Salvar Médias</h2>
-
-    <div class="space-y-6 mb-6">
-      <div class="flex items-center gap-4">
+      <!-- Formulário -->
+      <form class="space-y-4" id="loginForm">
+        <!-- E-mail -->
         <div>
-          <label for="mesSelect" class="block text-sm font-medium leading-5 text-gray-700 mb-1">Mês:</label>
-          <select id="mesSelect" class="form-select shadow-sm block w-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 transition ease-in-out duration-150">
-            <option value="jan">Janeiro</option>
-            <option value="fev">Fevereiro</option>
-            <option value="mar">Março</option>
-            <option value="abr">Abril</option>
-            <option value="mai">Maio</option>
-            <option value="jun">Junho</option>
-            <option value="jul">Julho</option>
-            <option value="ago">Agosto</option>
-            <option value="set">Setembro</option>
-            <option value="out">Outubro</option>
-            <option value="nov">Novembro</option>
-            <option value="dez">Dezembro</option>
-          </select>
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
+          <input type="email" id="email" name="email" class="form-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 focus:ring focus:ring-indigo-200 sm:text-sm">
         </div>
 
+        <!-- Senha -->
         <div>
-          <label for="anoSelect" class="block text-sm font-medium leading-5 text-gray-700 mb-1">Ano:</label>
-          <select id="anoSelect" class="form-select shadow-sm block w-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 transition ease-in-out duration-150">
-            <option value="2025">2025</option>
-            <option value="2026">2026</option>
-            <option value="2027">2027</option>
-            <option value="2028">2028</option>
-          </select>
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+          <input type="password" id="password" name="password" class="form-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 focus:ring focus:ring-indigo-200 sm:text-sm">
         </div>
-      </div>
+
+        <!-- Botão Entrar -->
+        <button type="submit" class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring focus:ring-indigo-200 transition ease-in-out duration-150">
+          Entrar
+        </button>
+      </form>
     </div>
+  </div>
 
-    <button id="botaoSalvarMedias" class="inline-flex justify-center items-center font-medium rounded-md border transition ease-in-out duration-150 focus:outline-none text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 border-transparent focus:border-indigo-700 focus:shadow-outline-indigo leading-5 text-sm px-4 py-2 mb-5 gap-2 cursor-pointer shadow-sm">
-      Salvar Médias nas Planilhas
-    </button>
-
-    <div class="container-status">
-    </div>
-  </section>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script type="module" src="./js/script.js"></script>
 </body>
 

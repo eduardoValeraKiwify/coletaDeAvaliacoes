@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestão de Notas</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .form-select {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3e%3cpath d='M7 7l3-3 3 3m0 6l-3 3-3-3' stroke='%239fa6b2' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      -webkit-print-color-adjust: exact;
+      color-adjust: exact;
+      background-repeat: no-repeat;
+      background-color: #ffffff;
+      border-color: #d2d6dc;
+      border-width: 1px;
+      border-radius: 0.375rem;
+      padding-top: 0.5rem;
+      padding-right: 2.5rem;
+      padding-bottom: 0.5rem;
+      padding-left: 0.75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      background-position: right 0.5rem center;
+      background-size: 1.5em 1.5em;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 min-h-screen p-6">
+
+  <div class="main coletorPage">
+    <!-- Colaboradores -->
+    <section class="mb-10">
+      <h2 id="colaboradoresTitle" class="inline-flex justify-center items-center gap-2 text-lg font-medium leading-6 text-gray-900 mb-5">Colaboradores</h2>
+      <div class="overflow-x-auto shadow-md rounded-lg">
+        <table id="colaboradoresTable" class="min-w-full border border-[#d2d6dc] rounded-lg">
+          <thead class="bg-[#057a55] text-white">
+            <tr>
+              <th class="px-6 py-3 text-left text-sm font-semibold">Nome</th>
+              <th class="px-6 py-3 text-left text-sm font-semibold">E-mail</th>
+              <th class="px-6 py-3 text-center text-sm font-semibold">Função</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[#d2d6dc]"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Calcular Médias -->
+    <section class="mb-10">
+      <h2 class="text-lg font-medium leading-6 text-gray-900 mb-5">Calcular Médias de Formulários</h2>
+
+      <div class="space-y-4 mb-6">
+        <div>
+          <label class="block text-sm font-medium leading-5 text-gray-700 mb-1">Formulário 1 URL:</label>
+          <input type="text" id="formUrl1" class="form-input block py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5 mask-user-input w-full">
+        </div>
+        <div>
+          <label class="block text-sm font-medium leading-5 text-gray-700 mb-1">Formulário 2 URL:</label>
+          <input type="text" id="formUrl2" class="form-input block py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5 mask-user-input w-full">
+        </div>
+      </div>
+
+      <button id="botaoCalcularMedias" class="inline-flex justify-center items-center font-medium rounded-md border transition ease-in-out duration-150 focus:outline-none text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 border-transparent focus:border-indigo-700 focus:shadow-outline-indigo leading-5 text-sm px-4 py-2 mb-5 gap-2 cursor-pointer shadow-sm">
+        Carregar e Calcular Médias
+      </button>
+
+      <div class="container-status">
+      </div>
+
+      <h3 class="text-lg font-medium leading-6 text-gray-900 mb-5">Médias Calculadas</h3>
+      <div class="overflow-x-auto shadow-md rounded-lg">
+        <table id="mediasTable" class="min-w-full border border-[#d2d6dc] rounded-lg">
+          <thead class="bg-[#057a55] text-white">
+            <tr>
+              <th class="px-6 py-3 text-left text-sm font-semibold">Nome</th>
+              <th class="px-6 py-3 text-left text-sm font-semibold">E-mail</th>
+              <th class="px-6 py-3 text-left text-sm font-semibold">Função</th>
+              <th class="px-6 py-3 text-left text-sm font-semibold">Média Final</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[#d2d6dc]"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Salvar Médias -->
+    <section>
+      <h2 class="text-lg font-medium leading-6 text-gray-900 mb-5">Salvar Médias</h2>
+
+      <div class="space-y-6 mb-6">
+        <div class="flex items-center gap-4">
+          <div>
+            <label for="mesSelect" class="block text-sm font-medium leading-5 text-gray-700 mb-1">Mês:</label>
+            <select id="mesSelect" class="form-select shadow-sm block w-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 transition ease-in-out duration-150">
+              <option value="jan">Janeiro</option>
+              <option value="fev">Fevereiro</option>
+              <option value="mar">Março</option>
+              <option value="abr">Abril</option>
+              <option value="mai">Maio</option>
+              <option value="jun">Junho</option>
+              <option value="jul">Julho</option>
+              <option value="ago">Agosto</option>
+              <option value="set">Setembro</option>
+              <option value="out">Outubro</option>
+              <option value="nov">Novembro</option>
+              <option value="dez">Dezembro</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="anoSelect" class="block text-sm font-medium leading-5 text-gray-700 mb-1">Ano:</label>
+            <select id="anoSelect" class="form-select shadow-sm block w-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 transition ease-in-out duration-150">
+              <option value="2025">2025</option>
+              <option value="2026">2026</option>
+              <option value="2027">2027</option>
+              <option value="2028">2028</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <button id="botaoSalvarMedias" class="inline-flex justify-center items-center font-medium rounded-md border transition ease-in-out duration-150 focus:outline-none text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 border-transparent focus:border-indigo-700 focus:shadow-outline-indigo leading-5 text-sm px-4 py-2 mb-5 gap-2 cursor-pointer shadow-sm">
+        Salvar Médias nas Planilhas
+      </button>
+
+      <div class="container-status">
+      </div>
+
+      <!-- 🔹 Componente de Logout -->
+      <div class="flex justify-end mt-4">
+        <a href="#" id="logoutLink" class="inline-flex items-center text-sm font-medium text-red-600 hover:text-red-500 transition duration-150 ease-in-out">
+          <!-- Ícone -->
+          <svg class="w-10 h-10 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+          </svg>
+          Sair
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script type="module" src="./js/script.js"></script>
+</body>
+
+</html>

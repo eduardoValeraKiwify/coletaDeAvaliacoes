@@ -1,7 +1,7 @@
 import { extrairFormId, initIconLoading, statusMensagem } from "./utils.js";
-import fetchJSON from "./fetch.js";
+import { fetchJSON } from "./fetch.js";
 import { GAS_URL } from "./gas.js";
-import { colaboradores } from "./colaboradores.js";
+import { colaboradores } from "./coletor.js";
 
 function renderMedias(medias) {
   const tbody = document.querySelector("#mediasTable tbody");
