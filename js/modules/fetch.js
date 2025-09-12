@@ -24,7 +24,6 @@ export function replaceContent(newText) {
 }
 
 async function loadModuleForPage(url) {
-  console.log("loadModuleForPage", url);
   if (url === "/" || url === "index.html" || url === "/index.html") {
     const { default: initLogin } = await import("./login.js");
     initLogin();
@@ -46,7 +45,6 @@ export async function fetchPage(url) {
 
 export function initFetchPage() {
   window.addEventListener("popstate", () => {
-    console.log("popstate", window.location.pathname);
     fetchPage(window.location.pathname);
   });
 

@@ -6,10 +6,31 @@ import { colaboradores } from "./coletor.js";
 function renderMedias(medias) {
   const tbody = document.querySelector("#mediasTable tbody");
   tbody.innerHTML = "";
-  medias.forEach((m) => {
+
+  medias.forEach((m, index) => {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td class="px-6 py-3">${m.nome}</td><td class="px-6 py-3">${m.email}</td><td class="px-6 py-3">${m.funcao}</td><td class="px-6 py-3">${m.mediaFinal}</td>`;
+
+    tr.innerHTML = `
+      <td class="px-6 py-3">${m.nome}</td>
+      <td class="px-6 py-3">${m.email}</td>
+      <td class="px-6 py-3">${m.funcao}</td>
+      <td class="px-6 py-3">
+        <input type="number" step="0.01" min="0" max="10"
+          value="${m.mediaFinal}"
+          data-index="${index}"
+          class="border rounded px-2 py-1 w-24 text-center"/>
+      </td>
+    `;
+
     tbody.appendChild(tr);
+  });
+
+  // Listener para capturar alterações
+  tbody.querySelectorAll("input[type=number]").forEach((input) => {
+    input.addEventListener("change", (e) => {
+      const idx = e.target.dataset.index;
+      medias[idx].mediaFinal = parseFloat(e.target.value).toFixed(2);
+    });
   });
 }
 
@@ -21,6 +42,16 @@ export async function calcularMedias() {
       this,
       "Informe URLs válidas para ambos formulários!",
       "alerta"
+    );
+    return;
+  }
+
+  if (!colaboradores.length) {
+    statusMensagem(
+      this,
+      "A lista de colaboradores não foi carregada",
+      "alerta",
+      false
     );
     return;
   }
@@ -67,7 +98,7 @@ export async function salvarMedias() {
       nome: cells[0].textContent,
       email: cells[1].textContent,
       funcao: cells[2].textContent,
-      mediaFinal: parseFloat(cells[3].textContent) || 0,
+      mediaFinal: parseFloat(cells[3].querySelector("input").value) || 0,
     };
   });
 

@@ -37,6 +37,7 @@
     <!-- Colaboradores -->
     <section class="mb-10">
       <h2 id="colaboradoresTitle" class="inline-flex justify-center items-center gap-2 text-lg font-medium leading-6 text-gray-900 mb-5">Colaboradores</h2>
+      <div class="container-status"></div>
       <div class="overflow-x-auto shadow-md rounded-lg">
         <div class="mb-4 flex gap-2 items-end">
           <div>
@@ -51,6 +52,8 @@
           <button id="btnAdicionar" class="inline-flex justify-center items-center font-medium rounded-md border transition ease-in-out duration-150 focus:outline-none text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 border-transparent focus:border-indigo-700 focus:shadow-outline-indigo leading-5 text-sm px-4 py-2 gap-2 cursor-pointer shadow-sm">
             Adicionar
           </button>
+          <div class="container-status">
+          </div>
         </div>
         <table id="colaboradoresTable" class="min-w-full border border-[#d2d6dc] rounded-lg">
           <thead class="bg-[#057a55] text-white">
@@ -62,7 +65,8 @@
           </thead>
           <tbody class="divide-y divide-[#d2d6dc]"></tbody>
         </table>
-      </div>
+        <div class="container-status">
+        </div>
     </section>
 
     <!-- Calcular Médias -->
@@ -148,14 +152,19 @@
 
       <!-- 🔹 Componente de Logout -->
       <div class="flex justify-end mt-4">
-        <a href="#" id="logoutLink" class="inline-flex items-center text-sm font-medium text-red-600 hover:text-red-500 transition duration-150 ease-in-out">
-          <!-- Ícone -->
-          <svg class="w-10 h-10 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
-          </svg>
-          Sair
-        </a>
+        <div class="flex flex-col items-end">
+          <a href="#" id="logoutLink" class="inline-flex items-center text-sm font-medium text-red-600 hover:text-red-500 transition duration-150 ease-in-out">
+            <svg class="w-10 h-10 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+            </svg>
+            Sair
+          </a>
+          <div class="container-status mt-1">
+            <!-- Status aqui -->
+          </div>
+        </div>
       </div>
+
     </section>
   </div>
 

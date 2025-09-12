@@ -1,6 +1,6 @@
 import { supabaseInit } from "./supabase.js";
 import { GAS_URL } from "./gas.js";
-import { initIconLoading } from "./utils.js";
+import { initIconLoading, statusMensagem } from "./utils.js";
 import { fetchJSON, fetchPage } from "./fetch.js";
 import { calcularMedias, salvarMedias } from "./medias.js";
 import logout from "./logout.js";
@@ -72,13 +72,19 @@ async function inicializarFormulario() {
   const select = document.getElementById("novoFuncao");
 
   // Carregar funções
-  const { data: funcoes, error } = await supabaseInit
+  const { data: funcoes, error: errorCarregarFuncoes } = await supabaseInit
     .from("funcoes")
     .select("id, nome")
     .order("nome");
 
-  if (error) {
-    console.error("Erro ao buscar funções:", error);
+  if (errorCarregarFuncoes) {
+    console.error("Erro ao buscar funções:", errorCarregarFuncoes);
+    statusMensagem(
+      document.getElementById("btnAdicionar"),
+      "Erro ao buscar funções",
+      "erro",
+      false
+    );
     return;
   }
 
@@ -102,7 +108,7 @@ async function inicializarFormulario() {
         return;
       }
 
-      const { data, error } = await supabaseInit
+      const { data, error: errorCarregarColaboradores } = await supabaseInit
         .from("colaboradores")
         .insert([{ nome, email, funcao_id }])
         .select(
@@ -115,12 +121,19 @@ async function inicializarFormulario() {
       `
         );
 
-      if (error) {
-        console.error("Erro ao adicionar colaborador:", error);
-        alert("Erro ao adicionar colaborador!");
+      if (errorCarregarColaboradores) {
+        console.error(
+          "Erro ao adicionar colaborador:",
+          errorCarregarColaboradores
+        );
+        statusMensagem(
+          document.getElementById("btnAdicionar"),
+          "Erro ao buscar funções",
+          "erro",
+          false
+        );
       } else {
         colaboradores.push(data[0]);
-        console.log(data[0]);
         renderColaboradores();
         document.getElementById("novoNome").value = "";
         document.getElementById("novoEmail").value = "";
@@ -134,13 +147,17 @@ async function renderColaboradores() {
   const tbody = document.querySelector("#colaboradoresTable tbody");
   tbody.innerHTML = "";
 
-  const { data: funcoes, error } = await supabaseInit
-    .from("funcoes")
-    .select("id, nome")
-    .order("nome");
+  const { data: funcoes, error: errorCarregarColaboradores } =
+    await supabaseInit.from("funcoes").select("id, nome").order("nome");
 
-  if (error) {
-    console.error("Erro ao buscar funções:", error);
+  if (errorCarregarColaboradores) {
+    console.error("Erro ao buscar funções:", errorCarregarColaboradores);
+    statusMensagem(
+      document.getElementById("colaboradoresTable"),
+      "Erro ao buscar funções",
+      "erro",
+      false
+    );
     return;
   }
 
@@ -166,13 +183,12 @@ async function renderColaboradores() {
 
     const select = document.createElement("select");
     select.className =
-      "border rounded px-2 py-1 bg-white focus:ring focus:ring-blue-300 transition-colors duration-300";
+      "form-select shadow-sm block w-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 transition ease-in-out duration-150";
 
     funcoes.forEach((f) => {
       const option = document.createElement("option");
       option.value = f.id;
       option.textContent = f.nome;
-      console.log(f.nome, c.funcoes.nome);
       if (f.nome === c.funcoes.nome) option.selected = true;
       select.appendChild(option);
     });
@@ -213,8 +229,14 @@ async function renderColaboradores() {
     tdExcluir.className = "px-6 py-3 text-center";
 
     const btnExcluir = document.createElement("button");
-    btnExcluir.textContent = "❌";
-    btnExcluir.className = "text-red-500 hover:text-red-700 font-bold";
+    btnExcluir.title = "Excluir colaborador";
+    btnExcluir.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+     stroke="currentColor" stroke-width="2">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+</svg>
+`;
+    btnExcluir.className =
+      "text-red-500 hover:text-red-700 font-bold cursor-pointer";
 
     btnExcluir.addEventListener("click", async () => {
       if (!confirm(`Deseja excluir ${c.nome}?`)) return;
@@ -247,7 +269,7 @@ async function renderColaboradores() {
 
 async function initCarregarColaboradores() {
   initIconLoading(document.getElementById("colaboradoresTitle"), true);
-  const { data, error } = await supabaseInit
+  const { data, error: errorCarregarColaboradores } = await supabaseInit
     .from("colaboradores")
     .select(
       `
@@ -260,8 +282,14 @@ async function initCarregarColaboradores() {
     )
     .order("nome");
 
-  if (error) {
-    console.error("Erro ao buscar colaboradores:", error);
+  if (errorCarregarColaboradores) {
+    console.error("Erro ao buscar colaboradores:", errorCarregarColaboradores);
+    statusMensagem(
+      document.getElementById("colaboradoresTitle"),
+      "Erro ao buscar colaboradores",
+      "erro",
+      false
+    );
     return;
   }
   initIconLoading(document.getElementById("colaboradoresTitle"));
@@ -291,10 +319,16 @@ export default async function initColetorPage() {
           .getElementById("logoutLink")
           .addEventListener("click", async function (event) {
             event.preventDefault();
-            const { success, error } = await logout();
+            const { success, error: errorLogout } = await logout();
 
             if (!success) {
-              console.error("Erro ao sair:", error);
+              console.error("Erro ao sair:", errorLogout);
+              statusMensagem(
+                document.getElementById("logoutLink"),
+                "Erro ao sair",
+                "erro",
+                false
+              );
               return;
             }
 
