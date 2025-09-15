@@ -92,6 +92,11 @@ export async function calcularMedias() {
 export async function salvarMedias() {
   initIconLoading(this, true);
   const rows = document.querySelectorAll("#mediasTable tbody tr");
+  if (!Array.from(rows).length) {
+    statusMensagem(this, "Não há médias para salvar!", "alerta");
+    initIconLoading(this, false);
+    return;
+  }
   const medias = Array.from(rows).map((tr) => {
     const cells = tr.querySelectorAll("td");
     return {
